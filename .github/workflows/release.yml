@@ -77,10 +77,11 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          if gh release view "${GITHUB_REF_NAME}" >/dev/null 2>&1; then
+          if gh release view "${GITHUB_REF_NAME}" --repo "${GITHUB_REPOSITORY}" >/dev/null 2>&1; then
             echo "Release ${GITHUB_REF_NAME} already exists; refusing to overwrite it." >&2
             exit 1
           fi
           gh release create "${GITHUB_REF_NAME}" artifacts/presence-* artifacts/SHA256SUMS \
+            --repo "${GITHUB_REPOSITORY}" \
             --title "Presence Go SDK and CLI ${GITHUB_REF_NAME}" \
             --notes "Public Go SDK and CLI release ${GITHUB_REF_NAME}."
