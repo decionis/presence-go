@@ -1,0 +1,86 @@
+name: Publish Go SDK release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build ${{ matrix.goos }}-${{ matrix.goarch }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - goos: linux
+            goarch: amd64
+            extension: ""
+          - goos: linux
+            goarch: arm64
+            extension: ""
+          - goos: darwin
+            goarch: amd64
+            extension: ""
+          - goos: darwin
+            goarch: arm64
+            extension: ""
+          - goos: windows
+            goarch: amd64
+            extension: .exe
+          - goos: windows
+            goarch: arm64
+            extension: .exe
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+      - name: Test and vet
+        run: |
+          go test ./...
+          go vet ./...
+      - name: Cross-compile CLI
+        env:
+          GOOS: ${{ matrix.goos }}
+          GOARCH: ${{ matrix.goarch }}
+          CGO_ENABLED: "0"
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          mkdir -p artifacts
+          go build -trimpath -ldflags "-s -w -X main.version=${version}" \
+            -o "artifacts/presence-${version}-${GOOS}-${GOARCH}${{ matrix.extension }}" \
+            ./cmd/presence
+      - uses: actions/upload-artifact@v7
+        with:
+          name: presence-${{ matrix.goos }}-${{ matrix.goarch }}
+          path: artifacts/*
+          if-no-files-found: error
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v7
+        with:
+          pattern: presence-*
+          path: artifacts
+          merge-multiple: true
+      - name: Generate and verify checksums
+        working-directory: artifacts
+        run: |
+          sha256sum presence-* > SHA256SUMS
+          sha256sum --check SHA256SUMS
+      - name: Create immutable GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view "${GITHUB_REF_NAME}" >/dev/null 2>&1; then
+            echo "Release ${GITHUB_REF_NAME} already exists; refusing to overwrite it." >&2
+            exit 1
+          fi
+          gh release create "${GITHUB_REF_NAME}" artifacts/presence-* artifacts/SHA256SUMS \
+            --title "Presence Go SDK and CLI ${GITHUB_REF_NAME}" \
+            --notes "Public Go SDK and CLI release ${GITHUB_REF_NAME}."
