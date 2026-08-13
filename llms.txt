@@ -1,0 +1,21 @@
+# Presence Go SDK (decionis/presence-go)
+
+> Public Go SDK and CLI for Presence — human presence verification before consequential actions execute. Request a live presence check covering proof of device, proof of presence, and proof of authority, and receive a signed Presence Record that can be verified offline against published JWKS keys.
+
+## Docs
+
+- [Presence quickstart](https://presence.decionis.com/developers/quickstart?utm_source=github&utm_medium=llms_txt&utm_campaign=dev_discovery): Onboarding for the SDK and REST API
+- [API reference](https://presence.decionis.com/developers/api?utm_source=github&utm_medium=llms_txt&utm_campaign=dev_discovery): Endpoints for presence checks and signed Presence Records
+- [Offline record verifier](https://presence.decionis.com/developers/offline-verifier?utm_source=github&utm_medium=llms_txt&utm_campaign=dev_discovery): Verify signed Presence Records without calling Decionis
+- [Verify a record](https://presence.decionis.com/proof/verify-a-record?utm_source=github&utm_medium=llms_txt&utm_campaign=dev_discovery): Browser-based record verification
+
+## Keys and verification
+
+- Signing keys (JWKS): https://presence.decionis.com/.well-known/presence-dossier-jwks.json
+
+## Related
+
+- [Presence](https://presence.decionis.com/?utm_source=github&utm_medium=llms_txt&utm_campaign=dev_discovery): Verify who is really present before high-stakes actions execute
+- [Decionis](https://decionis.com/?utm_source=github&utm_medium=llms_txt&utm_campaign=dev_discovery): The deterministic decision layer between intent and execution
+- [Presence Swift SDK](https://github.com/decionis/presence-swift): Swift/iOS SDK
+- [Presence plugin for Kong Gateway](https://github.com/decionis/kong-plugin-presence): Human verification at the API gateway
