@@ -39,10 +39,22 @@ a tenant key.
 
 ## Version pinning
 
-Every Presence SDK releases in lockstep — the same version number ships across Python,
-Node.js, the Browser, Go, .NET, Java, Android, and iOS. This public mirror publishes
-repository-root tags such as `v0.2.0`. During `0.x`, pin an exact version and read the
-[changelog](../CHANGELOG.md) before upgrading:
+Every Presence SDK releases in lockstep — the same version number ships across every
+language, currently `0.2.0`:
+
+| Language | Package |
+| --- | --- |
+| Go | [`github.com/decionis/presence-go`](https://pkg.go.dev/github.com/decionis/presence-go) |
+| Swift / iOS | [`decionis/presence-swift`](https://github.com/decionis/presence-swift) |
+| Python | [`decionis-presence`](https://pypi.org/project/decionis-presence/) |
+| Node.js | [`@decionis/presence-node`](https://www.npmjs.com/package/@decionis/presence-node) |
+| Browser | [`@decionis/presence-web`](https://www.npmjs.com/package/@decionis/presence-web) · [widget](https://www.npmjs.com/package/@decionis/presence-widget) · [React](https://www.npmjs.com/package/@decionis/presence-react) · [Vue](https://www.npmjs.com/package/@decionis/presence-vue) |
+| .NET | [`Decionis.Presence`](https://www.nuget.org/packages/Decionis.Presence/) · [CLI](https://www.nuget.org/packages/Decionis.Presence.Cli/) |
+| Java | [`com.decionis.presence:presence-java`](https://central.sonatype.com/artifact/com.decionis.presence/presence-java) |
+| Android | [`com.decionis.presence:presence-android`](https://central.sonatype.com/artifact/com.decionis.presence/presence-android) |
+
+This public mirror publishes repository-root tags such as `v0.2.0`. During `0.x`, pin an
+exact version and read the [changelog](../CHANGELOG.md) before upgrading:
 
 ```sh
 go get github.com/decionis/presence-go@v0.2.0
